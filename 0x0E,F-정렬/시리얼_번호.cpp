@@ -4,7 +4,7 @@ using namespace std;
 string arr[52];
 int N;
 
-bool cmp(string a, string b)
+bool cmp(const string& a, const string& b)
 {
     if (a.size() == b.size()) {
         int an = 0, bn = 0;

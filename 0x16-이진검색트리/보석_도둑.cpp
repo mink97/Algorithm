@@ -17,18 +17,15 @@ int main() {
         cin >> weight >> value;
         jewel[i] = { value, weight };
     }
-    sort(jewel, jewel + N);
+    sort(jewel, jewel + N, greater<pair<int, int>>());
     for (int i = 0; i < K; i++) {
         int c;
         cin >> c;
         bag.insert(c);
     }
-    for (int i = N - 1; i >= 0; i--) {
+    for (int i = 0; i < N; i++) {
         if (bag.empty()) break;
         int wgh = jewel[i].Y;
-        int val = jewel[i].X;
-        // int wgh, val;
-        // tie(val, wgh) = jewel[i];
         multiset<int>::iterator it = bag.lower_bound(wgh);
         if (it != bag.end()) {
             ans += jewel[i].X;

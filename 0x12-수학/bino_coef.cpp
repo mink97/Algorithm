@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define MAXNUM 1002;
+#define MAXNUM 1002
 
 int bino_coef(int n, int k) {
     int cache[MAXNUM][MAXNUM] = { 0, };
@@ -43,7 +43,7 @@ int choose(int times, int got, int n, int k) {
 int bino_coef2(int n, int k) {
     if (k > n) return 0;
     for (int i = 0; i < n + 1; i++) {
-        fill(cache[i], cache[i] + n + 1; -1);
+        fill(cache[i], cache[i] + n + 1, -1);
     }
     return choose(0, 0, n, k);
 }

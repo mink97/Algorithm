@@ -2,72 +2,71 @@
 using namespace std;
 
 int N, M, K;
+int R, C;
+int board[42][42];
+int sticker[12][12];
 
-vector<vector<int>> rotate(vector<vector<int>>& sticker) {
-    int x = sticker[0].size();
-    int y = sticker.size();
-    vector<vector<int>> ret(x, vector<int>(y, 0));
-    for (int i = 0; i < x; i++) {
-        for (int j = 0; j < y; j++) {
-            ret[i][j] = sticker[y - j - 1][i];
+void rotate() {
+    int tmp[12][12];
+    for (int i = 0; i < R; i++) {
+        for (int j = 0; j < C; j++) {
+            tmp[i][j] = sticker[i][j];
         }
     }
-    return ret;
+    for (int i = 0; i < R; i++) {
+        for (int j = 0; j < C; j++) {
+            sticker[j][i] = tmp[R - 1 - i][j];
+        }
+    }
+    swap(R, C);
 }
 
-bool check(vector<vector<int>>& board, int x, int y, vector<vector<int>>& sticker) {
-    for (int i = 0; i < sticker.size(); i++) {
-        for (int j = 0; j < sticker[0].size(); j++) {
-            if (sticker[i][j] == 0) continue;
-            else if (board[x + i][y + j] == 1) return false;
+bool postable(int x, int y) {
+    for (int i = 0; i < R; i++) {
+        for (int j = 0; j < C; j++) {
+            if (board[x + i][y + j] == 1 && sticker[i][j] == 1)
+                return false;
         }
     }
-    for (int i = 0; i < sticker.size(); i++) {
-        for (int j = 0; j < sticker[0].size(); j++) {
-            if (sticker[i][j] == 0) continue;
-            else board[x + i][y + j] = 1;
+    for (int i = 0; i < R; i++) {
+        for (int j = 0; j < C; j++) {
+            if (sticker[i][j])
+                board[x + i][y + j] = 1;
         }
     }
     return true;
-}
-
-void insert(vector<vector<int>>& board, vector<vector<int>>& sticker) {
-    vector<vector<int>> tmp;
-    // tmp.assign(sticker.size(), vector<int>(sticker[0].size()));
-    // copy(sticker.begin(), sticker.end(), tmp.begin());
-    for (int n = 0; n < 4; n++) {
-        if (n == 0) tmp = sticker;
-        for (int i = 0; i <= N - static_cast<int>(tmp.size()); i++) {
-            for (int j = 0; j <= M - static_cast<int>(tmp[0].size()); j++) {
-                if (check(board, i, j, tmp) == true) {
-                    return;
-                }
-            }
-        }
-        tmp = rotate(tmp);
-    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
     cin >> N >> M >> K;
-    vector<vector<int>> board(N, vector<int>(M, 0));
-    for (int i = 0; i < K; i++) {
-        int x, y;
-        cin >> x >> y;
-        vector<vector<int>> sticker(x, vector<int>(y, 0));
-        for (int a = 0; a < x; a++) {
-            for (int b = 0; b < y; b++) {
-                cin >> sticker[a][b];
+    while (K--) {
+        cin >> R >> C;
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < C; j++) {
+                cin >> sticker[i][j];
             }
         }
-        insert(board, sticker);
+        for (int rot = 0; rot < 4; rot++) {
+            bool isPaste = false;
+            for (int i = 0; i <= N - R; i++) {
+                for (int j = 0; j <= M - C; j++) {
+                    if (postable(i, j)) {
+                        isPaste = true;
+                        break;
+                    }
+                }
+                if (isPaste) break;
+            }
+            if (isPaste) break;
+            rotate();
+        }
     }
-    int cnt = N * M;
+    int cnt = 0;
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < M; j++) {
-            if (!board[i][j]) cnt--;
+            cnt += board[i][j];
         }
     }
     cout << cnt;
