@@ -7,7 +7,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
     cin >> N >> M;
-    fill(&table[1][1], &table[N + 1][N], 0x3f3f3f3f);
+    fill(&table[1][1], &table[N][N], 0x3f3f3f3f);
     while (M--) {
         int a, b, cost;
         cin >> a >> b >> cost;

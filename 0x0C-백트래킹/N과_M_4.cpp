@@ -12,6 +12,7 @@ void func(int idx) {
         return;
     }
     int st = idx == 0 ? 1 : arr[idx - 1];
+    cout << "ST: " << st << '\n';
     for (int i = st; i <= N; i++) {
         arr[idx] = i;
         func(idx + 1);
